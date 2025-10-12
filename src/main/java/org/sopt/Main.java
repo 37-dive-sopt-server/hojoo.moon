@@ -1,17 +1,95 @@
 package org.sopt;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        Map<Long, Member> store = new HashMap<>();
+        long sequence = 1L;
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n✨ --- DIVE SOPT 회원 관리 서비스 --- ✨");
+            System.out.println("---------------------------------");
+            System.out.println("1️⃣. 회원 등록 ➕");
+            System.out.println("2️⃣. ID로 회원 조회 🔍");
+            System.out.println("3️⃣. 전체 회원 조회 📋");
+            System.out.println("4️⃣. 종료 🚪");
+            System.out.println("---------------------------------");
+            System.out.print("메뉴를 선택하세요: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    System.out.print("등록할 회원 이름을 입력하세요: ");
+                    String name = scanner.nextLine();
+                    if (name.trim().isEmpty()) {
+                        System.out.println("⚠️ 이름을 입력해주세요.");
+                        continue;
+                    }
+
+                    Member newMember = new Member(sequence++, name);
+                    store.put(newMember.getId(), newMember);
+                    System.out.println("✅ 회원 등록 완료 (ID: " + newMember.getId() + ")");
+                    break;
+
+                case "2":
+                    System.out.print("조회할 회원 ID를 입력하세요: ");
+                    try {
+                        Long id = Long.parseLong(scanner.nextLine());
+                        Member foundMember = store.get(id);
+                        if (foundMember != null) {
+                            System.out.println("✅ 조회된 회원: ID=" + foundMember.getId() + ", 이름=" + foundMember.getName());
+                        } else {
+                            System.out.println("⚠️ 해당 ID의 회원을 찾을 수 없습니다.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("❌ 유효하지 않은 ID 형식입니다. 숫자를 입력해주세요.");
+                    }
+                    break;
+
+                case "3":
+                    if (store.isEmpty()) {
+                        System.out.println("ℹ️ 등록된 회원이 없습니다.");
+                    } else {
+                        System.out.println("--- 📋 전체 회원 목록 📋 ---");
+                        for (Member member : store.values()) {
+                            System.out.println("👤 ID=" + member.getId() + ", 이름=" + member.getName());
+                        }
+                        System.out.println("--------------------------");
+                    }
+                    break;
+
+                case "4":
+                    System.out.println("👋 서비스를 종료합니다. 안녕히 계세요!");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("🚫 잘못된 메뉴 선택입니다. 다시 시도해주세요.");
+            }
+        }
+    }
+
+    // 내부 클래스 형태로 Member 정의
+    static class Member {
+        private Long id;
+        private String name;
+
+        public Member(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }
