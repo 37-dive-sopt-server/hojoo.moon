@@ -36,4 +36,9 @@ public class MemoryMemberRepository implements MemberRepository {
     public Long generateNextId() {
         return sequence++;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        store.remove(id);
+    }
 }
