@@ -4,8 +4,8 @@ import org.sopt.controller.MemberController;
 import org.sopt.domain.Gender;
 import org.sopt.domain.Member;
 import org.sopt.handler.ExceptionHandler;
+import org.sopt.repository.FileMemberRepository;
 import org.sopt.repository.MemberRepository;
-import org.sopt.repository.MemoryMemberRepository;
 import org.sopt.service.MemberService;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        MemberRepository memberRepository = new MemoryMemberRepository();
+        MemberRepository memberRepository = new FileMemberRepository("member.csv");
         MemberService memberService = new MemberService(memberRepository);
         MemberController memberController = new MemberController(memberService);
 
