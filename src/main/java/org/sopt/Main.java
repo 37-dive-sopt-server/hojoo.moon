@@ -1,12 +1,14 @@
 package org.sopt;
 
+import org.sopt.controller.MemberController;
+import org.sopt.domain.Member;
+
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        Map<Long, Member> store = new HashMap<>();
-        long sequence = 1L;
+        MemberController memberController = new MemberController();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -30,19 +32,20 @@ public class Main {
                         System.out.println("⚠️ 이름을 입력해주세요.");
                         continue;
                     }
-
-                    Member newMember = new Member(sequence++, name);
-                    store.put(newMember.getId(), newMember);
-                    System.out.println("✅ 회원 등록 완료 (ID: " + newMember.getId() + ")");
+                    Long createdId = memberController.createMember(name);
+                    if (createdId != null) {
+                        System.out.println("✅ 회원 등록 완료 (ID: " + createdId + ")");
+                    } else {
+                        System.out.println("❌ 회원 등록 실패");
+                    }
                     break;
-
                 case "2":
                     System.out.print("조회할 회원 ID를 입력하세요: ");
                     try {
                         Long id = Long.parseLong(scanner.nextLine());
-                        Member foundMember = store.get(id);
-                        if (foundMember != null) {
-                            System.out.println("✅ 조회된 회원: ID=" + foundMember.getId() + ", 이름=" + foundMember.getName());
+                        Optional<Member> foundMember = memberController.findMemberById(id);
+                        if (foundMember.isPresent()) {
+                            System.out.println("✅ 조회된 회원: ID=" + foundMember.get().getId() + ", 이름=" + foundMember.get().getName());
                         } else {
                             System.out.println("⚠️ 해당 ID의 회원을 찾을 수 없습니다.");
                         }
@@ -50,46 +53,26 @@ public class Main {
                         System.out.println("❌ 유효하지 않은 ID 형식입니다. 숫자를 입력해주세요.");
                     }
                     break;
-
                 case "3":
-                    if (store.isEmpty()) {
+                    List<Member> allMembers = memberController.getAllMembers();
+                    if (allMembers.isEmpty()) {
                         System.out.println("ℹ️ 등록된 회원이 없습니다.");
-                    } else {
+                    }
+                    else {
                         System.out.println("--- 📋 전체 회원 목록 📋 ---");
-                        for (Member member : store.values()) {
+                        for (Member member : allMembers) {
                             System.out.println("👤 ID=" + member.getId() + ", 이름=" + member.getName());
                         }
                         System.out.println("--------------------------");
                     }
                     break;
-
                 case "4":
                     System.out.println("👋 서비스를 종료합니다. 안녕히 계세요!");
                     scanner.close();
                     return;
-
                 default:
                     System.out.println("🚫 잘못된 메뉴 선택입니다. 다시 시도해주세요.");
             }
-        }
-    }
-
-    // 내부 클래스 형태로 Member 정의
-    static class Member {
-        private Long id;
-        private String name;
-
-        public Member(Long id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
         }
     }
 }
