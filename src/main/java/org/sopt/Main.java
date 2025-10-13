@@ -3,6 +3,7 @@ package org.sopt;
 import org.sopt.controller.MemberController;
 import org.sopt.domain.Gender;
 import org.sopt.domain.Member;
+import org.sopt.domain.MemberValidator;
 import org.sopt.handler.ExceptionHandler;
 import org.sopt.repository.MemberRepository;
 import org.sopt.repository.MemoryMemberRepository;
@@ -37,13 +38,16 @@ public class Main {
                 case "1" -> ExceptionHandler.execute(() -> {
                     System.out.print("등록할 회원 이름을 입력하세요: ");
                     String name = scanner.nextLine();
+                    MemberValidator.validateName(name);
 
                     System.out.print("생년월일을 입력하세요 (YYYYMMDD): ");
                     String birthDateStr = scanner.nextLine();
                     LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
+                    MemberValidator.validateBirthDate(birthDate);
 
                     System.out.print("이메일을 입력하세요: ");
                     String email = scanner.nextLine();
+                    MemberValidator.validateEmail(email);
 
                     System.out.print("성별을 입력하세요 (남성/여성): ");
                     String genderInput = scanner.nextLine();
