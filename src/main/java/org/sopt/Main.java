@@ -7,6 +7,7 @@ import org.sopt.util.exception.handler.ExceptionHandler;
 import org.sopt.member.repository.FileMemberRepository;
 import org.sopt.member.repository.MemberRepository;
 import org.sopt.member.service.MemberService;
+import org.sopt.member.service.MemberServiceImpl;
 import org.sopt.util.validator.MemberValidator;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         MemberRepository memberRepository = new FileMemberRepository("member.csv");
-        MemberService memberService = new MemberService(memberRepository);
+        MemberService memberService = new MemberServiceImpl(memberRepository);
         MemberController memberController = new MemberController(memberService);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

@@ -2,53 +2,19 @@ package org.sopt.member.service;
 
 import org.sopt.member.domain.Gender;
 import org.sopt.member.domain.Member;
-import org.sopt.member.repository.MemberRepository;
-import org.sopt.util.validator.MemberValidator;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class MemberService {
+public interface MemberService {
 
-    private static final int MINIMUM_AGE = 20;
-    private final MemberRepository memberRepository;
+    Long join(String name, LocalDate birthDate, String email, Gender gender);
 
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    Member findOne(Long memberId);
 
-    public Long join(String name, LocalDate birthDate, String email, Gender gender) {
-        validateDuplicateEmail(email);
-        MemberValidator.validateMinimumAge(birthDate, MINIMUM_AGE);
+    List<Member> findAllMembers();
 
-        Long id = memberRepository.generateNextId();
-        Member member = Member.create(id, name, birthDate, email, gender);
-        memberRepository.save(member);
-        return member.getId();
-    }
+    void deleteMember(Long memberId);
 
-    private void validateDuplicateEmail(String email) {
-        memberRepository.findByEmail(email)
-                .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 이메일입니다: " + email);
-                });
-    }
-
-    public Member findOne(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 회원을 찾을 수 없습니다: " + memberId));
-    }
-
-    public List<Member> findAllMembers() {
-        return memberRepository.findAll();
-    }
-
-    public void deleteMember(Long memberId) {
-        findOne(memberId);
-        memberRepository.deleteById(memberId);
-    }
-
-    public void flush() {
-        memberRepository.saveToFile();
-    }
+    void flush();
 }
