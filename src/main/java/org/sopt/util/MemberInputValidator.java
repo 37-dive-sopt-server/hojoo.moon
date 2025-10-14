@@ -1,10 +1,10 @@
 package org.sopt.util;
 
-import org.sopt.domain.Member;
+import org.sopt.member.domain.Member;
 
 import java.time.LocalDate;
 
-public class InputValidator {
+public class MemberInputValidator {
 
     public static void validateName(String name) {
         Member.validateName(name);

@@ -1,13 +1,13 @@
 package org.sopt;
 
-import org.sopt.controller.MemberController;
-import org.sopt.domain.Gender;
-import org.sopt.domain.Member;
-import org.sopt.exception.handler.ExceptionHandler;
-import org.sopt.repository.FileMemberRepository;
-import org.sopt.repository.MemberRepository;
-import org.sopt.service.MemberService;
-import org.sopt.util.InputValidator;
+import org.sopt.member.controller.MemberController;
+import org.sopt.member.domain.Gender;
+import org.sopt.member.domain.Member;
+import org.sopt.util.exception.handler.ExceptionHandler;
+import org.sopt.member.repository.FileMemberRepository;
+import org.sopt.member.repository.MemberRepository;
+import org.sopt.member.service.MemberService;
+import org.sopt.util.MemberInputValidator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,16 +43,16 @@ public class Main {
                 case "1" -> ExceptionHandler.execute(() -> {
                     System.out.print("등록할 회원 이름을 입력하세요: ");
                     String name = scanner.nextLine();
-                    InputValidator.validateName(name);
+                    MemberInputValidator.validateName(name);
 
                     System.out.print("생년월일을 입력하세요 (YYYYMMDD): ");
                     String birthDateStr = scanner.nextLine();
                     LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
-                    InputValidator.validateBirthDate(birthDate);
+                    MemberInputValidator.validateBirthDate(birthDate);
 
                     System.out.print("이메일을 입력하세요: ");
                     String email = scanner.nextLine();
-                    InputValidator.validateEmail(email);
+                    MemberInputValidator.validateEmail(email);
 
                     System.out.print("성별을 입력하세요 (남성/여성): ");
                     String genderInput = scanner.nextLine();

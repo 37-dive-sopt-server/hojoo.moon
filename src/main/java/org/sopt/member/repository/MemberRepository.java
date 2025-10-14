@@ -1,6 +1,6 @@
-package org.sopt.repository;
+package org.sopt.member.repository;
 
-import org.sopt.domain.Member;
+import org.sopt.member.domain.Member;
 
 import java.util.List;
 import java.util.Optional;

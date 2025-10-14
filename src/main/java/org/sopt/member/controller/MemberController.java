@@ -1,8 +1,8 @@
-package org.sopt.controller;
+package org.sopt.member.controller;
 
-import org.sopt.domain.Gender;
-import org.sopt.domain.Member;
-import org.sopt.service.MemberService;
+import org.sopt.member.domain.Gender;
+import org.sopt.member.domain.Member;
+import org.sopt.member.service.MemberService;
 
 import java.time.LocalDate;
 import java.util.List;

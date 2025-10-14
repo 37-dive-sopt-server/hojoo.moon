@@ -1,7 +1,6 @@
-package org.sopt.domain;
+package org.sopt.member.domain;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.Objects;
 
 public class Member {

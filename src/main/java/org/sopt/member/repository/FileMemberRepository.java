@@ -1,8 +1,8 @@
-package org.sopt.repository;
+package org.sopt.member.repository;
 
-import org.sopt.domain.Gender;
-import org.sopt.domain.Member;
-import org.sopt.exception.StorageException;
+import org.sopt.member.domain.Gender;
+import org.sopt.member.domain.Member;
+import org.sopt.util.exception.StorageException;
 
 import java.io.*;
 import java.time.LocalDate;

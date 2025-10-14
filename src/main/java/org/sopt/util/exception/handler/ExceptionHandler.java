@@ -1,6 +1,6 @@
-package org.sopt.exception.handler;
+package org.sopt.util.exception.handler;
 
-import org.sopt.exception.StorageException;
+import org.sopt.util.exception.StorageException;
 
 import java.time.format.DateTimeParseException;
 
