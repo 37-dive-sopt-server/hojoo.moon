@@ -1,4 +1,6 @@
-package org.sopt.handler;
+package org.sopt.exception.handler;
+
+import org.sopt.exception.StorageException;
 
 import java.time.format.DateTimeParseException;
 
@@ -15,6 +17,8 @@ public class ExceptionHandler {
             System.out.println("❌ " + e.getMessage());
         } catch (IllegalStateException e) {
             System.out.println("⚠️ " + e.getMessage());
+        } catch (StorageException e) {
+            System.out.println("💾 저장소 오류: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("❌ 오류가 발생했습니다: " + e.getMessage());
         }

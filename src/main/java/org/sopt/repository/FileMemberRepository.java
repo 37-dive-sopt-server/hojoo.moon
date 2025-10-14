@@ -2,6 +2,7 @@ package org.sopt.repository;
 
 import org.sopt.domain.Gender;
 import org.sopt.domain.Member;
+import org.sopt.exception.StorageException;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.util.*;
 public class FileMemberRepository implements MemberRepository {
 
     private final Map<Long, Member> store = new HashMap<>();
-    private long sequence = 1L;
+    private Long sequence = 1L;
     private final String filePath;
 
     public FileMemberRepository(String filePath) {
@@ -51,7 +52,7 @@ public class FileMemberRepository implements MemberRepository {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("파일을 읽는 중 오류가 발생했습니다: " + e.getMessage(), e);
+            throw new StorageException("회원 데이터 파일 로드 실패");
         }
     }
 
@@ -70,7 +71,7 @@ public class FileMemberRepository implements MemberRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            throw new RuntimeException("파일을 저장하는 중 오류가 발생했습니다: " + e.getMessage(), e);
+            throw new StorageException("회원 데이터 파일 저장 실패");
         }
     }
 

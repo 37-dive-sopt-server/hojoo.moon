@@ -3,7 +3,7 @@ package org.sopt;
 import org.sopt.controller.MemberController;
 import org.sopt.domain.Gender;
 import org.sopt.domain.Member;
-import org.sopt.handler.ExceptionHandler;
+import org.sopt.exception.handler.ExceptionHandler;
 import org.sopt.repository.FileMemberRepository;
 import org.sopt.repository.MemberRepository;
 import org.sopt.service.MemberService;
