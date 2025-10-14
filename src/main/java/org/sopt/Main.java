@@ -7,6 +7,7 @@ import org.sopt.exception.handler.ExceptionHandler;
 import org.sopt.repository.FileMemberRepository;
 import org.sopt.repository.MemberRepository;
 import org.sopt.service.MemberService;
+import org.sopt.util.InputValidator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -42,16 +43,16 @@ public class Main {
                 case "1" -> ExceptionHandler.execute(() -> {
                     System.out.print("등록할 회원 이름을 입력하세요: ");
                     String name = scanner.nextLine();
-                    Member.validateName(name);
+                    InputValidator.validateName(name);
 
                     System.out.print("생년월일을 입력하세요 (YYYYMMDD): ");
                     String birthDateStr = scanner.nextLine();
                     LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
-                    Member.validateBirthDate(birthDate);
+                    InputValidator.validateBirthDate(birthDate);
 
                     System.out.print("이메일을 입력하세요: ");
                     String email = scanner.nextLine();
-                    Member.validateEmail(email);
+                    InputValidator.validateEmail(email);
 
                     System.out.print("성별을 입력하세요 (남성/여성): ");
                     String genderInput = scanner.nextLine();
