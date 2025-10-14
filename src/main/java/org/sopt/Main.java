@@ -48,7 +48,6 @@ public class Main {
                     String birthDateStr = scanner.nextLine();
                     LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
                     Member.validateBirthDate(birthDate);
-                    Member.validateAge(birthDate);
 
                     System.out.print("이메일을 입력하세요: ");
                     String email = scanner.nextLine();

@@ -5,10 +5,12 @@ import org.sopt.domain.Member;
 import org.sopt.repository.MemberRepository;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 public class MemberService {
 
+    private static final int MINIMUM_AGE = 20;
     private final MemberRepository memberRepository;
 
     public MemberService(MemberRepository memberRepository) {
@@ -17,6 +19,7 @@ public class MemberService {
 
     public Long join(String name, LocalDate birthDate, String email, Gender gender) {
         validateDuplicateEmail(email);
+        validateMinimumAge(birthDate);
 
         Long id = memberRepository.generateNextId();
         Member member = Member.create(id, name, birthDate, email, gender);
@@ -29,6 +32,13 @@ public class MemberService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 이메일입니다: " + email);
                 });
+    }
+
+    private void validateMinimumAge(LocalDate birthDate) {
+        int age = Period.between(birthDate, LocalDate.now()).getYears();
+        if (age < MINIMUM_AGE) {
+            throw new IllegalArgumentException("만 " + MINIMUM_AGE + "세 미만은 가입할 수 없습니다.");
+        }
     }
 
     public Member findOne(Long memberId) {

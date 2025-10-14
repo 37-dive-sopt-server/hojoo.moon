@@ -24,7 +24,6 @@ public class Member {
         validateName(name);
         validateEmail(email);
         validateBirthDate(birthDate);
-        validateAge(birthDate);
 
         return new Member(id, name, birthDate, email, gender);
     }
@@ -109,13 +108,6 @@ public class Member {
         }
         if (birthDate.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("생년월일은 현재 날짜보다 이전이어야 합니다.");
-        }
-    }
-
-    public static void validateAge(LocalDate birthDate) {
-        int age = Period.between(birthDate, LocalDate.now()).getYears();
-        if (age < 20) {
-            throw new IllegalArgumentException("만 20세 미만은 가입할 수 없습니다.");
         }
     }
 }
