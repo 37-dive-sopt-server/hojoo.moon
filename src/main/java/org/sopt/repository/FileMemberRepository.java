@@ -4,7 +4,6 @@ import org.sopt.domain.Gender;
 import org.sopt.domain.Member;
 
 import java.io.*;
-import java.nio.file.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -43,7 +42,7 @@ public class FileMemberRepository implements MemberRepository {
                     String email = parts[3];
                     Gender gender = Gender.valueOf(parts[4]);
 
-                    Member member = new Member(id, name, birthDate, email, gender);
+                    Member member = Member.create(id, name, birthDate, email, gender);
                     store.put(id, member);
 
                     if (id >= sequence) {
@@ -63,11 +62,11 @@ public class FileMemberRepository implements MemberRepository {
 
             for (Member member : store.values()) {
                 writer.write(String.format("%d,%s,%s,%s,%s",
-                        member.id(),
-                        member.name(),
-                        member.birthDate(),
-                        member.email(),
-                        member.gender()));
+                        member.getId(),
+                        member.getName(),
+                        member.getBirthDate(),
+                        member.getEmail(),
+                        member.getGender()));
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -77,7 +76,7 @@ public class FileMemberRepository implements MemberRepository {
 
     @Override
     public Member save(Member member) {
-        store.put(member.id(), member);
+        store.put(member.getId(), member);
         saveToFile();
         return member;
     }
@@ -90,7 +89,7 @@ public class FileMemberRepository implements MemberRepository {
     @Override
     public Optional<Member> findByEmail(String email) {
         return store.values().stream()
-                .filter(member -> member.email().equals(email))
+                .filter(member -> member.getEmail().equals(email))
                 .findFirst();
     }
 

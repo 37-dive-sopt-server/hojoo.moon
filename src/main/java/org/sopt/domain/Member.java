@@ -2,14 +2,69 @@ package org.sopt.domain;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
-public record Member(Long id, String name, LocalDate birthDate, String email, Gender gender) {
+public class Member {
 
-    public Member {
+    private Long id;
+    private String name;
+    private LocalDate birthDate;
+    private String email;
+    private Gender gender;
+
+    private Member(Long id, String name, LocalDate birthDate, String email, Gender gender) {
+        this.id = id;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.gender = gender;
+    }
+
+    public static Member create(Long id, String name, LocalDate birthDate, String email, Gender gender) {
         validateName(name);
         validateEmail(email);
         validateBirthDate(birthDate);
         validateAge(birthDate);
+
+        return new Member(id, name, birthDate, email, gender);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Member member)) {
+            return false;
+        }
+
+        return id != null && id.equals(member.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public static void validateName(String name) {

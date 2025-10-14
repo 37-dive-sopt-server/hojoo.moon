@@ -61,7 +61,7 @@ public class Main {
                     System.out.print("조회할 회원 ID를 입력하세요: ");
                     Long id = Long.parseLong(scanner.nextLine());
                     Member member = memberController.findMemberById(id);
-                    System.out.println("✅ 조회된 회원: ID=" + member.id() + ", 이름=" + member.name());
+                    System.out.println("✅ 조회된 회원: ID=" + member.getId() + ", 이름=" + member.getName());
                 });
 
                 case "3" -> {
@@ -71,7 +71,7 @@ public class Main {
                     } else {
                         System.out.println("--- 📋 전체 회원 목록 📋 ---");
                         for (Member member : allMembers) {
-                            System.out.println("👤 ID=" + member.id() + ", 이름=" + member.name());
+                            System.out.println("👤 ID=" + member.getId() + ", 이름=" + member.getName());
                         }
                         System.out.println("--------------------------");
                     }

@@ -19,9 +19,9 @@ public class MemberService {
         validateDuplicateEmail(email);
 
         Long id = memberRepository.generateNextId();
-        Member member = new Member(id, name, birthDate, email, gender);
+        Member member = Member.create(id, name, birthDate, email, gender);
         memberRepository.save(member);
-        return member.id();
+        return member.getId();
     }
 
     private void validateDuplicateEmail(String email) {
