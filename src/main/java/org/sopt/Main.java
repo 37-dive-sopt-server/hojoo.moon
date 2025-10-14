@@ -18,6 +18,11 @@ public class Main {
         MemberService memberService = new MemberService(memberRepository);
         MemberController memberController = new MemberController(memberService);
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            memberController.shutdown();
+            System.out.println("💾 데이터 저장 완료!");
+        }));
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {

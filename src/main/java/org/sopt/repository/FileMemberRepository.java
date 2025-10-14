@@ -56,7 +56,8 @@ public class FileMemberRepository implements MemberRepository {
         }
     }
 
-    private void saveToFile() {
+    @Override
+    public void saveToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("id,name,birthDate,email,gender");
             writer.newLine();
@@ -78,7 +79,7 @@ public class FileMemberRepository implements MemberRepository {
     @Override
     public Member save(Member member) {
         store.put(member.getId(), member);
-        saveToFile();
+//        saveToFile();
         return member;
     }
 
@@ -107,6 +108,6 @@ public class FileMemberRepository implements MemberRepository {
     @Override
     public void deleteById(Long id) {
         store.remove(id);
-        saveToFile();
+//        saveToFile();
     }
 }

@@ -30,4 +30,8 @@ public class MemberController {
     public void deleteMember(Long id) {
         memberService.deleteMember(id);
     }
+
+    public void shutdown() {
+        memberService.flush();
+    }
 }

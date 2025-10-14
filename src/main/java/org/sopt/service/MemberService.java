@@ -44,4 +44,8 @@ public class MemberService {
         findOne(memberId);
         memberRepository.deleteById(memberId);
     }
+
+    public void flush() {
+        memberRepository.saveToFile();
+    }
 }
