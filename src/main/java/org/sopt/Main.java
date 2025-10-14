@@ -7,7 +7,7 @@ import org.sopt.util.exception.handler.ExceptionHandler;
 import org.sopt.member.repository.FileMemberRepository;
 import org.sopt.member.repository.MemberRepository;
 import org.sopt.member.service.MemberService;
-import org.sopt.util.validator.MemberInputValidator;
+import org.sopt.util.validator.MemberValidator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,20 +43,20 @@ public class Main {
                 case "1" -> ExceptionHandler.execute(() -> {
                     System.out.print("등록할 회원 이름을 입력하세요: ");
                     String name = scanner.nextLine();
-                    MemberInputValidator.validateName(name);
+                    MemberValidator.validateName(name);
 
                     System.out.print("생년월일을 입력하세요 (YYYYMMDD): ");
                     String birthDateStr = scanner.nextLine();
                     LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
-                    MemberInputValidator.validateBirthDate(birthDate);
+                    MemberValidator.validateBirthDate(birthDate);
 
                     System.out.print("이메일을 입력하세요: ");
                     String email = scanner.nextLine();
-                    MemberInputValidator.validateEmail(email);
+                    MemberValidator.validateEmail(email);
 
                     System.out.print("성별을 입력하세요 (남성/여성): ");
                     String genderInput = scanner.nextLine();
-                    Gender gender = MemberInputValidator.validateGender(genderInput);
+                    Gender gender = MemberValidator.validateGender(genderInput);
 
                     Long createdId = memberController.createMember(name, birthDate, email, gender);
                     System.out.println("✅ 회원 등록 완료 (ID: " + createdId + ")");

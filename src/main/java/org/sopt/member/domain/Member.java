@@ -1,6 +1,7 @@
 package org.sopt.member.domain;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 public class Member {
@@ -107,6 +108,13 @@ public class Member {
         }
         if (birthDate.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("생년월일은 현재 날짜보다 이전이어야 합니다.");
+        }
+    }
+
+    public static void validateMinimumAge(LocalDate birthDate,  int minimumAge) {
+        int age = Period.between(birthDate, LocalDate.now()).getYears();
+        if (age < minimumAge) {
+            throw new IllegalArgumentException("만 " + minimumAge + "세 미만은 가입할 수 없습니다.");
         }
     }
 }

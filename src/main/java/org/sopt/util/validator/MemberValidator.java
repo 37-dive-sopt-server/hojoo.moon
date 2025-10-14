@@ -5,7 +5,7 @@ import org.sopt.member.domain.Member;
 
 import java.time.LocalDate;
 
-public class MemberInputValidator {
+public class MemberValidator {
 
     public static void validateName(String name) {
         Member.validateName(name);
@@ -21,5 +21,9 @@ public class MemberInputValidator {
 
     public static Gender validateGender(String genderInput) {
         return Gender.fromString(genderInput);
+    }
+
+    public static void validateMinimumAge(LocalDate birthDate, int minimumAge) {
+        Member.validateMinimumAge(birthDate, minimumAge);
     }
 }
