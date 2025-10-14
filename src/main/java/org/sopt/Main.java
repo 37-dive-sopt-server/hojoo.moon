@@ -56,7 +56,7 @@ public class Main {
 
                     System.out.print("성별을 입력하세요 (남성/여성): ");
                     String genderInput = scanner.nextLine();
-                    Gender gender = Gender.fromString(genderInput);
+                    Gender gender = MemberInputValidator.validateGender(genderInput);
 
                     Long createdId = memberController.createMember(name, birthDate, email, gender);
                     System.out.println("✅ 회원 등록 완료 (ID: " + createdId + ")");
