@@ -7,7 +7,7 @@ import org.sopt.util.exception.handler.ExceptionHandler;
 import org.sopt.member.repository.FileMemberRepository;
 import org.sopt.member.repository.MemberRepository;
 import org.sopt.member.service.MemberService;
-import org.sopt.util.MemberInputValidator;
+import org.sopt.util.validator.MemberInputValidator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

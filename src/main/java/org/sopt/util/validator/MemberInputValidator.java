@@ -1,4 +1,4 @@
-package org.sopt.util;
+package org.sopt.util.validator;
 
 import org.sopt.member.domain.Member;
 
