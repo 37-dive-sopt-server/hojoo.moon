@@ -24,6 +24,7 @@ public class Member {
         validateName(name);
         validateEmail(email);
         validateBirthDate(birthDate);
+        Objects.requireNonNull(gender, "성별은 필수 입력 항목입니다.");
 
         return new Member(id, name, birthDate, email, gender);
     }
@@ -111,7 +112,8 @@ public class Member {
         }
     }
 
-    public static void validateMinimumAge(LocalDate birthDate,  int minimumAge) {
+    public static void validateMinimumAge(LocalDate birthDate, int minimumAge) {
+        validateBirthDate(birthDate);
         int age = Period.between(birthDate, LocalDate.now()).getYears();
         if (age < minimumAge) {
             throw new IllegalArgumentException("만 " + minimumAge + "세 미만은 가입할 수 없습니다.");

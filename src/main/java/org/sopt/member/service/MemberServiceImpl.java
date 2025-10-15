@@ -1,9 +1,8 @@
 package org.sopt.member.service;
 
 import org.sopt.member.domain.Gender;
-import org.sopt.member.domain.Member;
 import org.sopt.member.repository.MemberRepository;
-import org.sopt.util.validator.MemberValidator;
+import org.sopt.member.domain.Member;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Long join(String name, LocalDate birthDate, String email, Gender gender) {
         validateDuplicateEmail(email);
-        MemberValidator.validateMinimumAge(birthDate, MINIMUM_AGE);
+        Member.validateMinimumAge(birthDate, MINIMUM_AGE);
 
         Long id = memberRepository.generateNextId();
         Member member = Member.create(id, name, birthDate, email, gender);
