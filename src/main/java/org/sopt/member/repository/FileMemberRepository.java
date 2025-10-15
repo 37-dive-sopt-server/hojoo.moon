@@ -35,7 +35,8 @@ public class FileMemberRepository implements MemberRepository {
                 }
 
                 Member member = parseLine(line);
-                storeMember(member);
+                save(member);
+                updateSequence(member.getId());
             }
         } catch (IOException e) {
             throw new StorageException("회원 데이터 파일 로드 실패");
@@ -63,11 +64,6 @@ public class FileMemberRepository implements MemberRepository {
         } catch (RuntimeException e) {
             throw new StorageException("회원 데이터 파일 파싱 실패.", e);
         }
-    }
-
-    private void storeMember(Member member) {
-        store.put(member.getId(), member);
-        updateSequence(member.getId());
     }
 
     private void updateSequence(Long id) {
