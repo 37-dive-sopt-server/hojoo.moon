@@ -10,6 +10,7 @@ import java.util.*;
 
 public class FileMemberRepository implements MemberRepository {
 
+    private static final int FIELD_SIZE = 5;
     private final Map<Long, Member> store = new HashMap<>();
     private Long sequence = 1L;
     private final String filePath;
@@ -49,7 +50,7 @@ public class FileMemberRepository implements MemberRepository {
 
     private Member parseLine(String line) {
         String[] parts = line.split(",");
-        if (parts.length != 5) {
+        if (parts.length != FIELD_SIZE) {
             throw new StorageException("회원 데이터 파일 형식이 올바르지 않습니다.");
         }
 
@@ -109,6 +110,12 @@ public class FileMemberRepository implements MemberRepository {
         return store.values().stream()
                 .filter(member -> member.getEmail().equals(email))
                 .findFirst();
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return store.values().stream()
+                .anyMatch(member -> member.getEmail().equals(email));
     }
 
     @Override

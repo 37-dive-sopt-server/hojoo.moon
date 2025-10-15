@@ -28,10 +28,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private void validateDuplicateEmail(String email) {
-        memberRepository.findByEmail(email)
-                .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 이메일입니다: " + email);
-                });
+        if (memberRepository.existsByEmail(email)) {
+            throw new IllegalStateException("이미 존재하는 이메일입니다: " + email);
+        }
     }
 
     @Override

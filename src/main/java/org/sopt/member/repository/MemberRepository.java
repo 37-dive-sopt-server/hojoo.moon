@@ -17,6 +17,8 @@ public interface MemberRepository {
 
     Optional<Member> findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
     List<Member> findAll();
 
     Long generateNextId();
