@@ -21,6 +21,7 @@ public enum ErrorCode {
 
     DUPLICATE_EMAIL("이미 존재하는 이메일입니다: %s"),
     MEMBER_NOT_FOUND("해당 ID의 회원을 찾을 수 없습니다: %d"),
+    ID_ALREADY_EXISTS("이미 ID가 설정된 회원입니다."),
 
     STORAGE_LOAD_FAILED("회원 데이터 파일 로드 실패"),
     STORAGE_INVALID_FORMAT("회원 데이터 파일 형식이 올바르지 않습니다."),

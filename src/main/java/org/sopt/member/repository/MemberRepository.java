@@ -21,7 +21,5 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
-    Long generateNextId();
-
     void deleteById(Long id);
 }

@@ -97,8 +97,10 @@ public class FileMemberRepository implements MemberRepository {
 
     @Override
     public Member save(Member member) {
+        if (member.getId() == null) {
+            member.setNewId(sequence++);
+        }
         store.put(member.getId(), member);
-//        saveToFile();
         return member;
     }
 
@@ -126,13 +128,7 @@ public class FileMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Long generateNextId() {
-        return sequence++;
-    }
-
-    @Override
     public void deleteById(Long id) {
         store.remove(id);
-//        saveToFile();
     }
 }

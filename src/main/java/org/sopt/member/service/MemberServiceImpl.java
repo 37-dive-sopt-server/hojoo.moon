@@ -24,10 +24,9 @@ public class MemberServiceImpl implements MemberService {
         validateDuplicateEmail(email);
         Member.validateMinimumAge(birthDate, MINIMUM_AGE);
 
-        Long id = memberRepository.generateNextId();
-        Member member = Member.create(id, name, birthDate, email, gender);
-        memberRepository.save(member);
-        return member.getId();
+        Member member = Member.create(null, name, birthDate, email, gender);
+        Member savedMember = memberRepository.save(member);
+        return savedMember.getId();
     }
 
     private void validateDuplicateEmail(String email) {
