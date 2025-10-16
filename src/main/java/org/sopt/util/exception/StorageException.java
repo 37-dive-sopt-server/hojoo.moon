@@ -1,11 +1,16 @@
 package org.sopt.util.exception;
 
 public class StorageException extends RuntimeException {
-    public StorageException(String message) {
-        super(message);
+
+    private final ErrorCode errorCode;
+
+    public StorageException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 
-    public StorageException(String message, Throwable cause) {
-        super(message, cause);
+    public StorageException(ErrorCode errorCode, Throwable cause) {
+        super(errorCode.getMessage(), cause);
+        this.errorCode = errorCode;
     }
 }

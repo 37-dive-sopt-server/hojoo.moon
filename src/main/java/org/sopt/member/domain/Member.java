@@ -1,8 +1,12 @@
 package org.sopt.member.domain;
 
+import org.sopt.util.exception.ValidationException;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
+
+import static org.sopt.util.exception.ErrorCode.*;
 
 public class Member {
 
@@ -24,7 +28,9 @@ public class Member {
         validateName(name);
         validateEmail(email);
         validateBirthDate(birthDate);
-        Objects.requireNonNull(gender, "성별은 필수 입력 항목입니다.");
+        if (gender == null) {
+            throw new ValidationException(GENDER_REQUIRED);
+        }
 
         return new Member(id, name, birthDate, email, gender);
     }
@@ -69,46 +75,46 @@ public class Member {
 
     public static void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("이름은 필수 입력 항목입니다.");
+            throw new ValidationException(NAME_REQUIRED);
         }
 
         String trimmedName = name.trim();
         String namePattern = "^[가-힣\\s]+$";
 
         if (!trimmedName.matches(namePattern)) {
-            throw new IllegalArgumentException("이름은 한글만 입력 가능합니다.");
+            throw new ValidationException(NAME_KOREAN_ONLY);
         }
 
         if (trimmedName.length() < 2) {
-            throw new IllegalArgumentException("이름은 최소 2자 이상이어야 합니다.");
+            throw new ValidationException(NAME_MIN_LENGTH);
         }
 
         if (trimmedName.length() > 50) {
-            throw new IllegalArgumentException("이름은 최대 50자까지 입력 가능합니다.");
+            throw new ValidationException(NAME_MAX_LENGTH);
         }
 
         if (trimmedName.contains(" ")) {
-            throw new IllegalArgumentException("이름에 공백은 사용할 수 없습니다.");
+            throw new ValidationException(NAME_NO_SPACE);
         }
     }
 
     public static void validateEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("이메일은 필수 입력 항목입니다.");
+            throw new ValidationException(EMAIL_REQUIRED);
         }
 
         String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!email.matches(emailPattern)) {
-            throw new IllegalArgumentException("유효하지 않은 이메일 형식입니다.");
+            throw new ValidationException(EMAIL_INVALID_FORMAT);
         }
     }
 
     public static void validateBirthDate(LocalDate birthDate) {
         if (birthDate == null) {
-            throw new IllegalArgumentException("생년월일은 필수 입력 항목입니다.");
+            throw new ValidationException(BIRTH_DATE_REQUIRED);
         }
         if (birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("생년월일은 현재 날짜보다 이전이어야 합니다.");
+            throw new ValidationException(BIRTH_DATE_FUTURE);
         }
     }
 
@@ -116,7 +122,7 @@ public class Member {
         validateBirthDate(birthDate);
         int age = Period.between(birthDate, LocalDate.now()).getYears();
         if (age < minimumAge) {
-            throw new IllegalArgumentException("만 " + minimumAge + "세 미만은 가입할 수 없습니다.");
+            throw new ValidationException(MINIMUM_AGE, minimumAge);
         }
     }
 }

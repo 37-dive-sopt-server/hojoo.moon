@@ -3,9 +3,12 @@ package org.sopt.member.service;
 import org.sopt.member.domain.Gender;
 import org.sopt.member.repository.MemberRepository;
 import org.sopt.member.domain.Member;
+import org.sopt.util.exception.BusinessException;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.sopt.util.exception.ErrorCode.*;
 
 public class MemberServiceImpl implements MemberService {
 
@@ -29,14 +32,14 @@ public class MemberServiceImpl implements MemberService {
 
     private void validateDuplicateEmail(String email) {
         if (memberRepository.existsByEmail(email)) {
-            throw new IllegalStateException("이미 존재하는 이메일입니다: " + email);
+            throw new BusinessException(DUPLICATE_EMAIL, email);
         }
     }
 
     @Override
     public Member findOne(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 회원을 찾을 수 없습니다: " + memberId));
+                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND, memberId));
     }
 
     @Override

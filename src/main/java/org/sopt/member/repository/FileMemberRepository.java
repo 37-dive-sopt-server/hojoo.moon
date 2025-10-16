@@ -8,6 +8,8 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
+import static org.sopt.util.exception.ErrorCode.*;
+
 public class FileMemberRepository implements MemberRepository {
 
     private static final int FIELD_SIZE = 5;
@@ -40,7 +42,7 @@ public class FileMemberRepository implements MemberRepository {
                 updateSequence(member.getId());
             }
         } catch (IOException e) {
-            throw new StorageException("회원 데이터 파일 로드 실패");
+            throw new StorageException(STORAGE_LOAD_FAILED);
         }
     }
 
@@ -51,7 +53,7 @@ public class FileMemberRepository implements MemberRepository {
     private Member parseLine(String line) {
         String[] parts = line.split(",");
         if (parts.length != FIELD_SIZE) {
-            throw new StorageException("회원 데이터 파일 형식이 올바르지 않습니다.");
+            throw new StorageException(STORAGE_INVALID_FORMAT);
         }
 
         try {
@@ -63,7 +65,7 @@ public class FileMemberRepository implements MemberRepository {
 
             return Member.create(id, name, birthDate, email, gender);
         } catch (RuntimeException e) {
-            throw new StorageException("회원 데이터 파일 파싱 실패.", e);
+            throw new StorageException(STORAGE_PARSE_FAILED, e);
         }
     }
 
@@ -89,7 +91,7 @@ public class FileMemberRepository implements MemberRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            throw new StorageException("회원 데이터 파일 저장 실패");
+            throw new StorageException(STORAGE_SAVE_FAILED);
         }
     }
 
