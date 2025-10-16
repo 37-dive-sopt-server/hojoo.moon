@@ -36,7 +36,7 @@ public class Member {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setNewId(Long id) {
@@ -72,12 +72,12 @@ public class Member {
             return false;
         }
 
-        return id != null && id.equals(member.id);
+        return this.id != null && this.id.equals(member.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.id);
     }
 
     public static void validateName(String name) {
