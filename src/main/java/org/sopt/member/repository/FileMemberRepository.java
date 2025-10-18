@@ -3,6 +3,7 @@ package org.sopt.member.repository;
 import org.sopt.member.domain.Gender;
 import org.sopt.member.domain.Member;
 import org.sopt.util.exception.StorageException;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.time.LocalDate;

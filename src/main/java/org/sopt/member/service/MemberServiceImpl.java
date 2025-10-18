@@ -4,16 +4,20 @@ import org.sopt.member.domain.Gender;
 import org.sopt.member.repository.MemberRepository;
 import org.sopt.member.domain.Member;
 import org.sopt.util.exception.BusinessException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.sopt.util.exception.ErrorCode.*;
 
+@Service
 public class MemberServiceImpl implements MemberService {
 
     private static final int MINIMUM_AGE = 20;
-    private final MemberRepository memberRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     public MemberServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
