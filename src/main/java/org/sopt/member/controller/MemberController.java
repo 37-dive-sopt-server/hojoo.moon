@@ -30,4 +30,9 @@ public class MemberController {
     public List<Member> getAllMembers() {
         return memberService.findAllMembers();
     }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteMember(@PathVariable Long id) {
+        memberService.deleteMember(id);
+    }
 }
