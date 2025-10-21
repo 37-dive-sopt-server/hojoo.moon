@@ -3,6 +3,8 @@ package org.sopt.member.repository;
 import org.sopt.util.exception.GeneralException;
 import org.sopt.member.domain.Gender;
 import org.sopt.member.domain.Member;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -10,6 +12,7 @@ import java.util.*;
 
 import static org.sopt.util.exception.ErrorCode.*;
 
+@Repository
 public class FileMemberRepository implements MemberRepository {
 
     private static final int FIELD_SIZE = 5;
@@ -17,7 +20,7 @@ public class FileMemberRepository implements MemberRepository {
     private Long sequence = 1L;
     private final String filePath;
 
-    public FileMemberRepository(String filePath) {
+    public FileMemberRepository(@Value("${file.path:member.csv}") String filePath) {
         this.filePath = filePath;
         loadFromFile();
     }
