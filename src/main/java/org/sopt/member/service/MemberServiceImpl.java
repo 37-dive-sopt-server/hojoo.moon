@@ -1,9 +1,9 @@
 package org.sopt.member.service;
 
+import org.sopt.util.exception.GeneralException;
 import org.sopt.member.domain.Gender;
 import org.sopt.member.repository.MemberRepository;
 import org.sopt.member.domain.Member;
-import org.sopt.util.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +35,14 @@ public class MemberServiceImpl implements MemberService {
 
     private void validateDuplicateEmail(String email) {
         if (memberRepository.existsByEmail(email)) {
-            throw new BusinessException(DUPLICATE_EMAIL, email);
+            throw new GeneralException(DUPLICATE_EMAIL, email);
         }
     }
 
     @Override
     public Member findOne(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND, memberId));
+                .orElseThrow(() -> new GeneralException(MEMBER_NOT_FOUND, memberId));
     }
 
     @Override

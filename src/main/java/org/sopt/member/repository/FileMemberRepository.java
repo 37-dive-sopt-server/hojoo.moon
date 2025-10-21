@@ -1,9 +1,8 @@
 package org.sopt.member.repository;
 
+import org.sopt.util.exception.GeneralException;
 import org.sopt.member.domain.Gender;
 import org.sopt.member.domain.Member;
-import org.sopt.util.exception.StorageException;
-import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -43,7 +42,7 @@ public class FileMemberRepository implements MemberRepository {
                 updateSequence(member.getId());
             }
         } catch (IOException e) {
-            throw new StorageException(STORAGE_LOAD_FAILED);
+            throw new GeneralException(STORAGE_LOAD_FAILED);
         }
     }
 
@@ -54,7 +53,7 @@ public class FileMemberRepository implements MemberRepository {
     private Member parseLine(String line) {
         String[] parts = line.split(",");
         if (parts.length != FIELD_SIZE) {
-            throw new StorageException(STORAGE_INVALID_FORMAT);
+            throw new GeneralException(STORAGE_INVALID_FORMAT);
         }
 
         try {
@@ -66,7 +65,7 @@ public class FileMemberRepository implements MemberRepository {
 
             return Member.create(id, name, birthDate, email, gender);
         } catch (RuntimeException e) {
-            throw new StorageException(STORAGE_PARSE_FAILED, e);
+            throw new GeneralException(STORAGE_PARSE_FAILED, e);
         }
     }
 
@@ -92,7 +91,7 @@ public class FileMemberRepository implements MemberRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            throw new StorageException(STORAGE_SAVE_FAILED);
+            throw new GeneralException(STORAGE_SAVE_FAILED);
         }
     }
 

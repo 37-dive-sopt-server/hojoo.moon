@@ -1,6 +1,6 @@
 package org.sopt.member.domain;
 
-import org.sopt.util.exception.ValidationException;
+import org.sopt.util.exception.GeneralException;
 
 import static org.sopt.util.exception.ErrorCode.*;
 
@@ -15,14 +15,14 @@ public enum Gender {
 
     public static Gender fromString(String input) {
         if (input == null || input.trim().isEmpty()) {
-            throw new ValidationException(GENDER_REQUIRED);
+            throw new GeneralException(GENDER_REQUIRED);
         }
 
         String normalized = input.trim().toUpperCase();
         return switch (normalized) {
             case "남성" -> MALE;
             case "여성" -> FEMALE;
-            default -> throw new ValidationException(GENDER_INVALID, input);
+            default -> throw new GeneralException(GENDER_INVALID, input);
         };
     }
 }

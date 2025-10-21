@@ -1,6 +1,6 @@
 package org.sopt.member.domain;
 
-import org.sopt.util.exception.ValidationException;
+import org.sopt.util.exception.GeneralException;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -29,7 +29,7 @@ public class Member {
         validateEmail(email);
         validateBirthDate(birthDate);
         if (gender == null) {
-            throw new ValidationException(GENDER_REQUIRED);
+            throw new GeneralException(GENDER_REQUIRED);
         }
 
         return new Member(id, name, birthDate, email, gender);
@@ -37,6 +37,13 @@ public class Member {
 
     public Long getId() {
         return this.id;
+    }
+
+    public void setNewId(Long id) {
+        if (this.id != null) {
+            throw new GeneralException(ID_ALREADY_EXISTS);
+        }
+        this.id = id;
     }
 
     public String getName() {
@@ -75,46 +82,46 @@ public class Member {
 
     public static void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new ValidationException(NAME_REQUIRED);
+            throw new GeneralException(NAME_REQUIRED);
         }
 
         String trimmedName = name.trim();
         String namePattern = "^[가-힣\\s]+$";
 
         if (!trimmedName.matches(namePattern)) {
-            throw new ValidationException(NAME_KOREAN_ONLY);
+            throw new GeneralException(NAME_KOREAN_ONLY);
         }
 
         if (trimmedName.length() < 2) {
-            throw new ValidationException(NAME_MIN_LENGTH);
+            throw new GeneralException(NAME_MIN_LENGTH);
         }
 
         if (trimmedName.length() > 50) {
-            throw new ValidationException(NAME_MAX_LENGTH);
+            throw new GeneralException(NAME_MAX_LENGTH);
         }
 
         if (trimmedName.contains(" ")) {
-            throw new ValidationException(NAME_NO_SPACE);
+            throw new GeneralException(NAME_NO_SPACE);
         }
     }
 
     public static void validateEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
-            throw new ValidationException(EMAIL_REQUIRED);
+            throw new GeneralException(EMAIL_REQUIRED);
         }
 
         String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!email.matches(emailPattern)) {
-            throw new ValidationException(EMAIL_INVALID_FORMAT);
+            throw new GeneralException(EMAIL_INVALID_FORMAT);
         }
     }
 
     public static void validateBirthDate(LocalDate birthDate) {
         if (birthDate == null) {
-            throw new ValidationException(BIRTH_DATE_REQUIRED);
+            throw new GeneralException(BIRTH_DATE_REQUIRED);
         }
         if (birthDate.isAfter(LocalDate.now())) {
-            throw new ValidationException(BIRTH_DATE_FUTURE);
+            throw new GeneralException(BIRTH_DATE_FUTURE);
         }
     }
 
@@ -122,7 +129,7 @@ public class Member {
         validateBirthDate(birthDate);
         int age = Period.between(birthDate, LocalDate.now()).getYears();
         if (age < minimumAge) {
-            throw new ValidationException(MINIMUM_AGE, minimumAge);
+            throw new GeneralException(MINIMUM_AGE, minimumAge);
         }
     }
 }
