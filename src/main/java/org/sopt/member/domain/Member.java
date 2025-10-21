@@ -39,13 +39,6 @@ public class Member {
         return this.id;
     }
 
-    public void setNewId(Long id) {
-        if (this.id != null) {
-            throw new ValidationException(ID_ALREADY_EXISTS);
-        }
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
