@@ -4,6 +4,7 @@ import org.sopt.util.exception.GeneralException;
 import org.sopt.member.domain.Gender;
 import org.sopt.member.domain.Member;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
@@ -13,6 +14,7 @@ import java.util.*;
 import static org.sopt.util.exception.ErrorCode.*;
 
 @Repository
+@Primary
 public class FileMemberRepository implements MemberRepository {
 
     private static final int FIELD_SIZE = 5;

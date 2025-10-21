@@ -1,6 +1,5 @@
 package org.sopt.member.controller;
 
-import org.sopt.member.domain.Gender;
 import org.sopt.member.dto.request.MemberCreateRequest;
 import org.sopt.member.dto.response.MemberResponse;
 import org.sopt.member.service.MemberService;
@@ -10,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -22,12 +19,7 @@ public class MemberController {
 
     @PostMapping("/users")
     public ResponseEntity<BaseResponse<Long>> createMember(@RequestBody MemberCreateRequest request) {
-        Long memberId = memberService.join(
-                request.name(),
-                LocalDate.parse(request.birthDate(), DateTimeFormatter.ofPattern("yyyyMMdd")),
-                request.email(),
-                Gender.fromString(request.gender())
-        );
+        Long memberId = memberService.join(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(BaseResponse.onSuccess(memberId));
     }

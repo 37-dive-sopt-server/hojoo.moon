@@ -4,10 +4,12 @@ import org.sopt.util.exception.GeneralException;
 import org.sopt.member.domain.Gender;
 import org.sopt.member.repository.MemberRepository;
 import org.sopt.member.domain.Member;
+import org.sopt.member.dto.request.MemberCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.sopt.util.exception.ErrorCode.*;
@@ -24,11 +26,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Long join(String name, LocalDate birthDate, String email, Gender gender) {
+    public Long join(MemberCreateRequest request) {
+        String email = request.email();
         validateDuplicateEmail(email);
+
+        LocalDate birthDate = LocalDate.parse(request.birthDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
         Member.validateMinimumAge(birthDate, MINIMUM_AGE);
 
-        Member member = Member.create(null, name, birthDate, email, gender);
+        Gender gender = Gender.fromString(request.gender());
+
+        Member member = Member.create(null, request.name(), birthDate, email, gender);
         Member savedMember = memberRepository.save(member);
         return savedMember.getId();
     }
