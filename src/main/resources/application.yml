@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: sopt-assignment
+
+logging:
+  level:
+    root: INFO
+    org.sopt: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+file:
+  path:
+    - "member.csv"

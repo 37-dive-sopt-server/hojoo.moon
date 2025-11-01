@@ -1,37 +1,47 @@
 package org.sopt.member.controller;
 
-import org.sopt.member.domain.Gender;
-import org.sopt.member.domain.Member;
+import org.sopt.member.dto.request.MemberCreateRequest;
+import org.sopt.member.dto.response.MemberResponse;
 import org.sopt.member.service.MemberService;
+import org.sopt.util.exception.dto.BaseResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
+@RestController
 public class MemberController {
 
-    private final MemberService memberService;
+    @Autowired
+    private MemberService memberService;
 
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
+    @PostMapping("/users")
+    public ResponseEntity<BaseResponse<Long>> createMember(@RequestBody MemberCreateRequest request) {
+        Long memberId = memberService.join(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(BaseResponse.onSuccess(memberId));
     }
 
-    public Long createMember(String name, LocalDate birthDate, String email, Gender gender) {
-        return memberService.join(name, birthDate, email, gender);
+    @GetMapping("/users/{id}")
+    public ResponseEntity<BaseResponse<MemberResponse>> getMembers(@PathVariable Long id) {
+        MemberResponse response = MemberResponse.from(memberService.findOne(id));
+        return ResponseEntity.ok(BaseResponse.onSuccess(response));
     }
 
-    public Member findMemberById(Long id) {
-        return memberService.findOne(id);
+    @GetMapping("/users/all")
+    public ResponseEntity<BaseResponse<List<MemberResponse>>> getAllMembers() {
+        List<MemberResponse> members = memberService.findAllMembers()
+                .stream()
+                .map(MemberResponse::from)
+                .toList();
+        return ResponseEntity.ok(BaseResponse.onSuccess(members));
     }
 
-    public List<Member> getAllMembers() {
-        return memberService.findAllMembers();
-    }
-
-    public void deleteMember(Long id) {
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
         memberService.deleteMember(id);
-    }
-
-    public void shutdown() {
-        memberService.flush();
+        return ResponseEntity.noContent().build();
     }
 }
