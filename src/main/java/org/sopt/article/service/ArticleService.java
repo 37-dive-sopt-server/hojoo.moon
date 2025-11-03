@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.article.dto.request.ArticleCreateRequest;
 import org.sopt.article.dto.response.ArticleDetailResponse;
 import org.sopt.article.entity.Article;
-import org.sopt.article.entity.ArticleTag;
 import org.sopt.article.exception.ArticleErrorCode;
 import org.sopt.article.exception.ArticleException;
 import org.sopt.article.repository.ArticleRepository;

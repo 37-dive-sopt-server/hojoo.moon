@@ -21,7 +21,7 @@ public record MemberCreateRequest(
         String birthDate,
 
         @NotBlank(message = "성별은 필수 입력 항목입니다.")
-        @Pattern(regexp = "^(MALE|FEMALE)$", message = "성별은 MALE 또는 FEMALE만 입력 가능합니다.")
+        @Pattern(regexp = "^(남성|여성)$", message = "성별은 남성 또는 여성만 입력 가능합니다.")
         String gender
 ) {
 }

@@ -11,7 +11,6 @@ public record ArticleDetailResponse(
         String content,
         ArticleTag tag,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt,
         String author
 ) {
     public static ArticleDetailResponse from(Article article) {
@@ -21,7 +20,6 @@ public record ArticleDetailResponse(
                 article.getContent(),
                 article.getTag(),
                 article.getCreatedAt(),
-                article.getUpdatedAt(),
                 article.getMember().getName()
         );
     }
