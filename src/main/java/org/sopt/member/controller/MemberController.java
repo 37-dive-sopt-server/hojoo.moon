@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.member.controller.spec.MemberControllerDocs;
 import org.sopt.member.dto.request.MemberCreateRequest;
-import org.sopt.member.dto.response.MemberCreateResponse;
 import org.sopt.member.dto.response.MemberResponse;
 import org.sopt.member.service.MemberService;
 import org.sopt.util.BaseResponse;
@@ -23,14 +22,12 @@ public class MemberController implements MemberControllerDocs {
 
     @Override
     @PostMapping
-    public ResponseEntity<BaseResponse<MemberCreateResponse>> createMember(
+    public ResponseEntity<BaseResponse<Long>> createMember(
             @Valid @RequestBody MemberCreateRequest request
     ) {
-        Long memberId = memberService.join(request);
-        MemberCreateResponse response = MemberCreateResponse.from(memberId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(BaseResponse.onCreated(response));
+                .body(BaseResponse.onCreated(memberService.join(request)));
     }
 
     @Override

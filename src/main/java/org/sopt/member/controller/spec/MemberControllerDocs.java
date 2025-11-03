@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.sopt.member.dto.request.MemberCreateRequest;
-import org.sopt.member.dto.response.MemberCreateResponse;
 import org.sopt.member.dto.response.MemberResponse;
 import org.sopt.util.BaseResponse;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public interface MemberControllerDocs {
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
             @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일", content = @Content)
     })
-    ResponseEntity<BaseResponse<MemberCreateResponse>> createMember(
+    ResponseEntity<BaseResponse<Long>> createMember(
             @Valid @RequestBody MemberCreateRequest request
     );
 

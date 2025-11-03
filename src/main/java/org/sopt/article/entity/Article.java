@@ -36,22 +36,4 @@ public class Article extends BaseEntity {
                 .build();
     }
 
-    public void updateTitle(String newTitle) {
-        this.title = newTitle;
-    }
-
-    public void updateContent(String newContent) {
-        this.content = newContent;
-    }
-
-    public void updateTag(ArticleTag newTag) {
-        this.tag = newTag;
-    }
-
-    public boolean isWrittenBy(Member member) {
-        if (member == null || this.member == null) {
-            return false;
-        }
-        return this.member.equals(member);
-    }
 }
