@@ -1,5 +1,6 @@
 package org.sopt.member.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.member.controller.spec.MemberControllerDocs;
 import org.sopt.member.dto.request.MemberCreateRequest;
@@ -23,7 +24,9 @@ public class MemberController implements MemberControllerDocs {
 
     @Override
     @PostMapping
-    public ResponseEntity<BaseResponse<MemberCreateResponse>> createMember(@RequestBody MemberCreateRequest request) {
+    public ResponseEntity<BaseResponse<MemberCreateResponse>> createMember(
+            @Valid @RequestBody MemberCreateRequest request
+    ) {
         Long memberId = memberService.join(request);
         MemberCreateResponse response = MemberCreateResponse.from(memberId);
         return ResponseEntity

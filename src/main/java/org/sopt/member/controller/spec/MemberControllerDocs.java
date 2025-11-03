@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.sopt.member.dto.request.MemberCreateRequest;
 import org.sopt.member.dto.response.MemberCreateResponse;
 import org.sopt.member.dto.response.MemberResponse;
@@ -26,7 +27,7 @@ public interface MemberControllerDocs {
             @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일", content = @Content)
     })
     ResponseEntity<BaseResponse<MemberCreateResponse>> createMember(
-            @RequestBody MemberCreateRequest request
+            @Valid @RequestBody MemberCreateRequest request
     );
 
     @Operation(summary = "전체 회원 조회", description = "모든 회원 정보를 조회합니다.")

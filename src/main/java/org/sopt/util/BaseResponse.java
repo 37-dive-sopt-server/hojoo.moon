@@ -3,6 +3,7 @@ package org.sopt.util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -12,9 +13,9 @@ public class BaseResponse<T> {
     private final String code;
     private final String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final T data;
+    private final @Nullable T data;
 
-    private BaseResponse(String code, String message, T data) {
+    private BaseResponse(String code, String message, @Nullable T data) {
         this.code = code;
         this.message = message;
         this.data = data;
