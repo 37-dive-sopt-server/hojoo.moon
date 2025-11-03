@@ -1,6 +1,7 @@
-package org.sopt.member.entity;
+package org.sopt.article.entity;
 
 import jakarta.persistence.*;
+import org.sopt.member.entity.Member;
 
 @Entity
 public class Article {

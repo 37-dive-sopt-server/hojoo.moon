@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.sopt.article.entity.Article;
 import org.sopt.util.exception.GeneralException;
 
 import java.time.LocalDate;
