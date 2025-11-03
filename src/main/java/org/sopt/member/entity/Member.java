@@ -8,7 +8,6 @@ import org.sopt.article.entity.Article;
 import org.sopt.util.exception.GeneralException;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,11 +38,8 @@ public class Member {
     }
 
     public static Member create(String name, LocalDate birthDate, String email, Gender gender) {
-        validateName(name);
-        validateEmail(email);
-        validateBirthDate(birthDate);
-        if (gender == null) {
-            throw new GeneralException(MEMBER_GENDER_REQUIRED);
+        if (birthDate != null && birthDate.isAfter(LocalDate.now())) {
+            throw new GeneralException(MEMBER_BIRTH_DATE_FUTURE);
         }
 
         return new Member(name, birthDate, email, gender);
@@ -65,58 +61,5 @@ public class Member {
     @Override
     public int hashCode() {
         return Objects.hash(this.id);
-    }
-
-    public static void validateName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new GeneralException(MEMBER_NAME_REQUIRED);
-        }
-
-        String trimmedName = name.trim();
-        String namePattern = "^[가-힣\\s]+$";
-
-        if (!trimmedName.matches(namePattern)) {
-            throw new GeneralException(MEMBER_NAME_KOREAN_ONLY);
-        }
-
-        if (trimmedName.length() < 2) {
-            throw new GeneralException(MEMBER_NAME_MIN_LENGTH);
-        }
-
-        if (trimmedName.length() > 50) {
-            throw new GeneralException(MEMBER_NAME_MAX_LENGTH);
-        }
-
-        if (trimmedName.contains(" ")) {
-            throw new GeneralException(MEMBER_NAME_NO_SPACE);
-        }
-    }
-
-    public static void validateEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            throw new GeneralException(MEMBER_EMAIL_REQUIRED);
-        }
-
-        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        if (!email.matches(emailPattern)) {
-            throw new GeneralException(MEMBER_EMAIL_INVALID_FORMAT);
-        }
-    }
-
-    public static void validateBirthDate(LocalDate birthDate) {
-        if (birthDate == null) {
-            throw new GeneralException(MEMBER_BIRTH_DATE_REQUIRED);
-        }
-        if (birthDate.isAfter(LocalDate.now())) {
-            throw new GeneralException(MEMBER_BIRTH_DATE_FUTURE);
-        }
-    }
-
-    public static void validateMinimumAge(LocalDate birthDate, int minimumAge) {
-        validateBirthDate(birthDate);
-        int age = Period.between(birthDate, LocalDate.now()).getYears();
-        if (age < minimumAge) {
-            throw new GeneralException(MEMBER_MINIMUM_AGE, minimumAge);
-        }
     }
 }

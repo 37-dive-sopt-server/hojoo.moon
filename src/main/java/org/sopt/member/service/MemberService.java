@@ -38,9 +38,7 @@ public class MemberService {
     }
 
     public List<MemberResponse> findAllMembers() {
-        return memberRepository.findAll().stream()
-                .map(MemberResponse::from)
-                .toList();
+        return memberRepository.findAllBy();
     }
 
     @Transactional
@@ -50,8 +48,8 @@ public class MemberService {
     }
 
     public MemberResponse findOne(Long memberId) {
-        Member member = findMemberById(memberId);
-        return MemberResponse.from(member);
+        return memberRepository.findProjectionById(memberId)
+                .orElseThrow(() -> new GeneralException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
     private Member findMemberById(Long memberId) {

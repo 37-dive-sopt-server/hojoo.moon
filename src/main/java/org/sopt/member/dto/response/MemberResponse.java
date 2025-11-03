@@ -1,25 +1,14 @@
 package org.sopt.member.dto.response;
 
-import org.sopt.member.entity.Member;
+import org.sopt.member.entity.Gender;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 
-public record MemberResponse(
-        Long id,
-        String name,
-        String email,
-        String birthDate,
-        String gender
-) {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    public static MemberResponse from(Member member) {
-        return new MemberResponse(
-                member.getId(),
-                member.getName(),
-                member.getEmail(),
-                member.getBirthDate().format(DATE_FORMATTER),
-                member.getGender().name()
-        );
-    }
+public interface MemberResponse {
+    Long getId();
+    String getName();
+    String getEmail();
+    LocalDate getBirthDate();
+    Gender getGender();
 }
