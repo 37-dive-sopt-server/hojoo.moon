@@ -2,6 +2,7 @@ package org.sopt.article.service;
 
 import lombok.RequiredArgsConstructor;
 import org.sopt.article.dto.request.ArticleCreateRequest;
+import org.sopt.article.dto.request.ArticleSearchCondition;
 import org.sopt.article.dto.response.ArticleDetailResponse;
 import org.sopt.article.dto.response.ArticleListResponse;
 import org.sopt.article.entity.Article;
@@ -93,5 +94,9 @@ public class ArticleService {
                 .stream()
                 .map(ArticleListResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    public List<ArticleListResponse> searchArticles(ArticleSearchCondition condition) {
+        return articleRepository.search(condition);
     }
 }

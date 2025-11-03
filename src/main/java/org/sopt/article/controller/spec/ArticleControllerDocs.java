@@ -14,6 +14,7 @@ import org.sopt.util.BaseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -45,4 +46,13 @@ public interface ArticleControllerDocs {
             @ApiResponse(responseCode = "200", description = "조회 성공")
     })
     ResponseEntity<BaseResponse<List<ArticleListResponse>>> getAllArticles();
+
+    @Operation(summary = "게시글 검색", description = "제목과 작성자 이름으로 게시글을 검색합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "검색 성공")
+    })
+    ResponseEntity<BaseResponse<List<ArticleListResponse>>> searchArticles(
+            @Parameter(description = "게시글 제목") @RequestParam(required = false) String title,
+            @Parameter(description = "작성자 이름") @RequestParam(required = false) String authorName
+    );
 }

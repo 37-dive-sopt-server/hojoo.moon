@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ArticleRepository extends JpaRepository<Article, Long> {
+public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
 
     @Query("SELECT new org.sopt.article.dto.response.ArticleDetailResponse(" +
             "a.id, a.title, a.content, a.tag, a.createdAt, a.member.name)" +

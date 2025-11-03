@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.article.controller.spec.ArticleControllerDocs;
 import org.sopt.article.dto.request.ArticleCreateRequest;
+import org.sopt.article.dto.request.ArticleSearchCondition;
 import org.sopt.article.dto.response.ArticleDetailResponse;
 import org.sopt.article.dto.response.ArticleListResponse;
 import org.sopt.article.service.ArticleService;
@@ -37,10 +38,22 @@ public class ArticleController implements ArticleControllerDocs {
         return ResponseEntity.ok(BaseResponse.onSuccess(articleService.findArticleById(id)));
     }
 
+    // TODO: pagination
     @Override
     @GetMapping
     public ResponseEntity<BaseResponse<List<ArticleListResponse>>> getAllArticles() {
         return ResponseEntity.ok(BaseResponse.onSuccess(articleService.findAllArticles()));
+    }
+
+    // TODO: pagination
+    @Override
+    @GetMapping("/search")
+    public ResponseEntity<BaseResponse<List<ArticleListResponse>>> searchArticles(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String authorName
+    ) {
+        ArticleSearchCondition condition = new ArticleSearchCondition(title, authorName);
+        return ResponseEntity.ok(BaseResponse.onSuccess(articleService.searchArticles(condition)));
     }
 
 }
