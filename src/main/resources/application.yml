@@ -15,6 +15,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+        # N+1 문제 해결: 전역 배치 사이즈 설정
+        # 연관된 엔티티를 지정된 개수만큼 묶어서 IN 쿼리로 조회
+        default_batch_fetch_size: 100
     show-sql: true
 
 file:

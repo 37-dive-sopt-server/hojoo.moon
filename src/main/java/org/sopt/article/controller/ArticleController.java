@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.article.controller.spec.ArticleControllerDocs;
 import org.sopt.article.dto.request.ArticleCreateRequest;
 import org.sopt.article.dto.response.ArticleDetailResponse;
+import org.sopt.article.dto.response.ArticleListResponse;
 import org.sopt.article.service.ArticleService;
 import org.sopt.util.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/articles")
@@ -32,6 +35,12 @@ public class ArticleController implements ArticleControllerDocs {
     @GetMapping("/{id}")
     public ResponseEntity<BaseResponse<ArticleDetailResponse>> getArticleById(@PathVariable Long id) {
         return ResponseEntity.ok(BaseResponse.onSuccess(articleService.findArticleById(id)));
+    }
+
+    @Override
+    @GetMapping
+    public ResponseEntity<BaseResponse<List<ArticleListResponse>>> getAllArticles() {
+        return ResponseEntity.ok(BaseResponse.onSuccess(articleService.findAllArticles()));
     }
 
 }

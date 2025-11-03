@@ -9,10 +9,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.sopt.article.dto.request.ArticleCreateRequest;
 import org.sopt.article.dto.response.ArticleDetailResponse;
+import org.sopt.article.dto.response.ArticleListResponse;
 import org.sopt.util.BaseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @Tag(name = "Article", description = "게시글 관리 API")
 public interface ArticleControllerDocs {
@@ -36,4 +39,10 @@ public interface ArticleControllerDocs {
     ResponseEntity<BaseResponse<ArticleDetailResponse>> getArticleById(
             @Parameter(description = "게시글 ID", required = true) @PathVariable Long id
     );
+
+    @Operation(summary = "게시글 목록 조회", description = "모든 게시글의 목록을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공")
+    })
+    ResponseEntity<BaseResponse<List<ArticleListResponse>>> getAllArticles();
 }

@@ -2,6 +2,7 @@ package org.sopt.article.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.sopt.member.entity.Member;
 import org.sopt.util.entity.BaseEntity;
 
@@ -16,6 +17,7 @@ public class Article extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @BatchSize(size = 10)
     private Member member;
 
     @Column(unique = true, nullable = false)
