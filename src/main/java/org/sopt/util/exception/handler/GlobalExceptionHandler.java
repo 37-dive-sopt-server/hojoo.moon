@@ -3,7 +3,7 @@ package org.sopt.util.exception.handler;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.sopt.util.exception.ErrorCode;
 import org.sopt.util.exception.GeneralException;
-import org.sopt.util.exception.dto.BaseResponse;
+import org.sopt.util.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

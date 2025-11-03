@@ -1,19 +1,72 @@
 package org.sopt.member.service;
 
-import org.sopt.member.domain.Member;
+import lombok.RequiredArgsConstructor;
 import org.sopt.member.dto.request.MemberCreateRequest;
+import org.sopt.member.entity.Gender;
+import org.sopt.member.entity.Member;
+import org.sopt.member.repository.MemberRepository;
+import org.sopt.util.exception.GeneralException;
+import org.sopt.member.exception.MemberErrorCode;
+import org.sopt.util.exception.ValidationErrorCode;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
-public interface MemberService {
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MemberService {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    Long join(MemberCreateRequest request);
+    private final MemberRepository memberRepository;
 
-    Member findOne(Long memberId);
+    @Transactional
+    public Long join(MemberCreateRequest request) {
+        validateDuplicateEmail(request.email());
 
-    List<Member> findAllMembers();
+        LocalDate birthDate = parseBirthDate(request.birthDate());
+        Gender gender = Gender.fromString(request.gender());
+        Member member = Member.create(request.name(), birthDate, request.email(), gender);
 
-    void deleteMember(Long memberId);
+        Member savedMember = memberRepository.save(member);
+        return savedMember.getId();
+    }
 
-    void flush();
+    public List<Member> findAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteMember(Long memberId) {
+        Member member = findOne(memberId);
+        memberRepository.delete(member);
+    }
+
+    public Member findOne(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(MemberErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    private void validateDuplicateEmail(String email) {
+        memberRepository.findByEmail(email)
+                .ifPresent(m -> {
+                    throw new GeneralException(MemberErrorCode.MEMBER_DUPLICATE_EMAIL, email);
+                });
+    }
+
+    private LocalDate parseBirthDate(String birthDateStr) {
+        if (birthDateStr == null || birthDateStr.trim().isEmpty()) {
+            throw new GeneralException(ValidationErrorCode.MEMBER_BIRTH_DATE_REQUIRED);
+        }
+
+        try {
+            return LocalDate.parse(birthDateStr, DATE_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new GeneralException(ValidationErrorCode.MEMBER_BIRTH_DATE_REQUIRED);
+        }
+    }
 }

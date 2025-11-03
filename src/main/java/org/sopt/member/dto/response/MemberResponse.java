@@ -1,6 +1,6 @@
 package org.sopt.member.dto.response;
 
-import org.sopt.member.domain.Member;
+import org.sopt.member.entity.Member;
 
 import java.time.format.DateTimeFormatter;
 

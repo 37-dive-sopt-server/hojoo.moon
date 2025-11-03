@@ -1,65 +1,51 @@
-package org.sopt.member.domain;
+package org.sopt.member.entity;
 
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.sopt.util.exception.GeneralException;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import static org.sopt.util.exception.ErrorCode.*;
+import static org.sopt.util.exception.ValidationErrorCode.*;
 
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private LocalDate birthDate;
     private String email;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private Member(Long id, String name, LocalDate birthDate, String email, Gender gender) {
-        this.id = id;
+    @OneToMany(mappedBy = "member")
+    private List<Article> articles = new ArrayList<>();
+
+    private Member(String name, LocalDate birthDate, String email, Gender gender) {
         this.name = name;
         this.birthDate = birthDate;
         this.email = email;
         this.gender = gender;
     }
 
-    public static Member create(Long id, String name, LocalDate birthDate, String email, Gender gender) {
+    public static Member create(String name, LocalDate birthDate, String email, Gender gender) {
         validateName(name);
         validateEmail(email);
         validateBirthDate(birthDate);
         if (gender == null) {
-            throw new GeneralException(GENDER_REQUIRED);
+            throw new GeneralException(MEMBER_GENDER_REQUIRED);
         }
 
-        return new Member(id, name, birthDate, email, gender);
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setNewId(Long id) {
-        if (this.id != null) {
-            throw new GeneralException(ID_ALREADY_EXISTS);
-        }
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Gender getGender() {
-        return gender;
+        return new Member(name, birthDate, email, gender);
     }
 
     @Override
@@ -82,46 +68,46 @@ public class Member {
 
     public static void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new GeneralException(NAME_REQUIRED);
+            throw new GeneralException(MEMBER_NAME_REQUIRED);
         }
 
         String trimmedName = name.trim();
         String namePattern = "^[가-힣\\s]+$";
 
         if (!trimmedName.matches(namePattern)) {
-            throw new GeneralException(NAME_KOREAN_ONLY);
+            throw new GeneralException(MEMBER_NAME_KOREAN_ONLY);
         }
 
         if (trimmedName.length() < 2) {
-            throw new GeneralException(NAME_MIN_LENGTH);
+            throw new GeneralException(MEMBER_NAME_MIN_LENGTH);
         }
 
         if (trimmedName.length() > 50) {
-            throw new GeneralException(NAME_MAX_LENGTH);
+            throw new GeneralException(MEMBER_NAME_MAX_LENGTH);
         }
 
         if (trimmedName.contains(" ")) {
-            throw new GeneralException(NAME_NO_SPACE);
+            throw new GeneralException(MEMBER_NAME_NO_SPACE);
         }
     }
 
     public static void validateEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
-            throw new GeneralException(EMAIL_REQUIRED);
+            throw new GeneralException(MEMBER_EMAIL_REQUIRED);
         }
 
         String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!email.matches(emailPattern)) {
-            throw new GeneralException(EMAIL_INVALID_FORMAT);
+            throw new GeneralException(MEMBER_EMAIL_INVALID_FORMAT);
         }
     }
 
     public static void validateBirthDate(LocalDate birthDate) {
         if (birthDate == null) {
-            throw new GeneralException(BIRTH_DATE_REQUIRED);
+            throw new GeneralException(MEMBER_BIRTH_DATE_REQUIRED);
         }
         if (birthDate.isAfter(LocalDate.now())) {
-            throw new GeneralException(BIRTH_DATE_FUTURE);
+            throw new GeneralException(MEMBER_BIRTH_DATE_FUTURE);
         }
     }
 
@@ -129,7 +115,7 @@ public class Member {
         validateBirthDate(birthDate);
         int age = Period.between(birthDate, LocalDate.now()).getYears();
         if (age < minimumAge) {
-            throw new GeneralException(MINIMUM_AGE, minimumAge);
+            throw new GeneralException(MEMBER_MINIMUM_AGE, minimumAge);
         }
     }
 }
