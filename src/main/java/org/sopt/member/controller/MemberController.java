@@ -6,7 +6,6 @@ import org.sopt.member.controller.spec.MemberControllerDocs;
 import org.sopt.member.dto.request.MemberCreateRequest;
 import org.sopt.member.dto.response.MemberCreateResponse;
 import org.sopt.member.dto.response.MemberResponse;
-import org.sopt.member.entity.Member;
 import org.sopt.member.service.MemberService;
 import org.sopt.util.BaseResponse;
 import org.springframework.http.HttpStatus;
@@ -37,18 +36,14 @@ public class MemberController implements MemberControllerDocs {
     @Override
     @GetMapping
     public ResponseEntity<BaseResponse<List<MemberResponse>>> getAllMembers() {
-        List<Member> members = memberService.findAllMembers();
-        List<MemberResponse> response = members.stream()
-                .map(MemberResponse::from)
-                .toList();
+        List<MemberResponse> response = memberService.findAllMembers();
         return ResponseEntity.ok(BaseResponse.onSuccess(response));
     }
 
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<BaseResponse<MemberResponse>> getMemberById(@PathVariable Long id) {
-        Member member = memberService.findOne(id);
-        MemberResponse response = MemberResponse.from(member);
+        MemberResponse response = memberService.findOne(id);
         return ResponseEntity.ok(BaseResponse.onSuccess(response));
     }
 

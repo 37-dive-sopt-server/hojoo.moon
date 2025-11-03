@@ -2,6 +2,7 @@ package org.sopt.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.sopt.member.dto.request.MemberCreateRequest;
+import org.sopt.member.dto.response.MemberResponse;
 import org.sopt.member.entity.Gender;
 import org.sopt.member.entity.Member;
 import org.sopt.member.repository.MemberRepository;
@@ -36,17 +37,24 @@ public class MemberService {
         return savedMember.getId();
     }
 
-    public List<Member> findAllMembers() {
-        return memberRepository.findAll();
+    public List<MemberResponse> findAllMembers() {
+        return memberRepository.findAll().stream()
+                .map(MemberResponse::from)
+                .toList();
     }
 
     @Transactional
     public void deleteMember(Long memberId) {
-        Member member = findOne(memberId);
+        Member member = findMemberById(memberId);
         memberRepository.delete(member);
     }
 
-    public Member findOne(Long memberId) {
+    public MemberResponse findOne(Long memberId) {
+        Member member = findMemberById(memberId);
+        return MemberResponse.from(member);
+    }
+
+    private Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
