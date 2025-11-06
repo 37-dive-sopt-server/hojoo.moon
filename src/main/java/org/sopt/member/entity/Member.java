@@ -27,9 +27,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "member")
-    private List<Article> articles = new ArrayList<>();
-
     private Member(String name, LocalDate birthDate, String email, Gender gender) {
         this.name = name;
         this.birthDate = birthDate;
@@ -38,11 +35,48 @@ public class Member {
     }
 
     public static Member create(String name, LocalDate birthDate, String email, Gender gender) {
-        if (birthDate != null && birthDate.isAfter(LocalDate.now())) {
-            throw new GeneralException(MEMBER_BIRTH_DATE_FUTURE);
-        }
+        validateName(name);
+        validateEmail(email);
+        validateBirthDate(birthDate);
+        validateGender(gender);
 
         return new Member(name, birthDate, email, gender);
+    }
+
+    private static void validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new GeneralException(MEMBER_NAME_REQUIRED);
+        }
+        if (!name.matches("^[가-힣]+$")) {
+            throw new GeneralException(MEMBER_NAME_INVALID_FORMAT);
+        }
+        if (name.length() < 2 || name.length() > 50) {
+            throw new GeneralException(MEMBER_NAME_INVALID_LENGTH);
+        }
+    }
+
+    private static void validateEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new GeneralException(MEMBER_EMAIL_REQUIRED);
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new GeneralException(MEMBER_EMAIL_INVALID_FORMAT);
+        }
+    }
+
+    private static void validateBirthDate(LocalDate birthDate) {
+        if (birthDate == null) {
+            throw new GeneralException(MEMBER_BIRTH_DATE_REQUIRED);
+        }
+        if (birthDate.isAfter(LocalDate.now())) {
+            throw new GeneralException(MEMBER_BIRTH_DATE_FUTURE);
+        }
+    }
+
+    private static void validateGender(Gender gender) {
+        if (gender == null) {
+            throw new GeneralException(MEMBER_GENDER_REQUIRED);
+        }
     }
 
     @Override
