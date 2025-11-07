@@ -17,8 +17,8 @@ public class QueryDSLContributor implements FunctionContributor {
                 .resolve(StandardBasicTypes.DOUBLE);
 
         functionContributions.getFunctionRegistry().registerPattern(
-                "match_against",
-                "match (?1, ?2) against (?3 in boolean mode)",
+                "match_against_title",
+                "match (?1) against (?2 in natural language mode)",
                 doubleType
         );
     }

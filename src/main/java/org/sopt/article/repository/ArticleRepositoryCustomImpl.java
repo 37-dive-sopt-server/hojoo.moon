@@ -44,9 +44,8 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
         }
         NumberTemplate<Double> relevance = Expressions.numberTemplate(
                 Double.class,
-                "function('match_against', {0}, {1}, {2})",
+                "function('match_against_title', {0}, {1})",
                 article.title,
-                article.content,
                 title
         );
         return relevance.gt(0d);
