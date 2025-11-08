@@ -1,5 +1,8 @@
 package org.sopt.util.exception;
 
+import lombok.Getter;
+
+@Getter
 public class GeneralException extends RuntimeException {
 
     private final ErrorCode errorCode;
@@ -19,7 +22,4 @@ public class GeneralException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
 }

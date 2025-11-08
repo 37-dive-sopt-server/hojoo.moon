@@ -1,10 +1,12 @@
 package org.sopt.member.controller;
 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.sopt.member.controller.spec.MemberControllerDocs;
 import org.sopt.member.dto.request.MemberCreateRequest;
 import org.sopt.member.dto.response.MemberResponse;
 import org.sopt.member.service.MemberService;
-import org.sopt.util.exception.dto.BaseResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.sopt.util.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,36 +14,40 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class MemberController {
+@RequestMapping("/members")
+@RequiredArgsConstructor
+public class MemberController implements MemberControllerDocs {
 
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
 
-    @PostMapping("/users")
-    public ResponseEntity<BaseResponse<Long>> createMember(@RequestBody MemberCreateRequest request) {
-        Long memberId = memberService.join(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(BaseResponse.onSuccess(memberId));
+    @Override
+    @PostMapping
+    public ResponseEntity<BaseResponse<Long>> createMember(
+            @Valid @RequestBody MemberCreateRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(BaseResponse.onCreated(memberService.join(request)));
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<BaseResponse<MemberResponse>> getMembers(@PathVariable Long id) {
-        MemberResponse response = MemberResponse.from(memberService.findOne(id));
+    @Override
+    @GetMapping
+    public ResponseEntity<BaseResponse<List<MemberResponse>>> getAllMembers() {
+        List<MemberResponse> response = memberService.findAllMembers();
         return ResponseEntity.ok(BaseResponse.onSuccess(response));
     }
 
-    @GetMapping("/users/all")
-    public ResponseEntity<BaseResponse<List<MemberResponse>>> getAllMembers() {
-        List<MemberResponse> members = memberService.findAllMembers()
-                .stream()
-                .map(MemberResponse::from)
-                .toList();
-        return ResponseEntity.ok(BaseResponse.onSuccess(members));
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<BaseResponse<MemberResponse>> getMemberById(@PathVariable Long id) {
+        MemberResponse response = memberService.findOne(id);
+        return ResponseEntity.ok(BaseResponse.onSuccess(response));
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
+    @Override
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponse<Void>> deleteMember(@PathVariable Long id) {
         memberService.deleteMember(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(BaseResponse.onSuccess());
     }
 }
