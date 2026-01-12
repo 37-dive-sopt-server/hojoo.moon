@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.sopt.article.exception.ArticleException;
+import org.sopt.comment.entity.Comment;
 import org.sopt.member.entity.Member;
 import org.sopt.util.entity.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.sopt.article.exception.ArticleErrorCode.*;
@@ -33,6 +36,10 @@ public class Article extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ArticleTag tag;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public static Article create(Member member, String title, String content, ArticleTag tag) {
         validateMember(member);
